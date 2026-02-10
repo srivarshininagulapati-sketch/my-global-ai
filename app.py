@@ -9,10 +9,11 @@ with st.sidebar:
 
 if user_api_key:
     try:
+        # Standard configuration
         genai.configure(api_key=user_api_key)
         
-        # Using the most stable model name format
-        model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+        # We will try 'gemini-1.5-flash-latest' which is the most compatible version
+        model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -26,7 +27,7 @@ if user_api_key:
             with st.chat_message("user"):
                 st.markdown(prompt)
 
-            # Generating content
+            # API Call
             response = model.generate_content(prompt)
             
             with st.chat_message("assistant"):
@@ -34,14 +35,10 @@ if user_api_key:
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
                 
     except Exception as e:
-        # Error vachina chota exact ga em jarigindo chupisthundi
-        st.error(f"Oka chinna error vachindi: {e}")
-        if "404" in str(e):
-             st.warning("Tip: 'gemini-pro' model ki marustunnam, okasari malli try cheyandi.")
-             model = genai.GenerativeModel(model_name="gemini-pro")
+        st.error(f"Error: {e}")
+        st.info("Tip: API Key correct ga undo ledo chusukondi. Leda 'gemini-pro' try cheyandi.")
 else:
     st.info("Please enter your API Key in the sidebar to start!")
-
 
 
 
