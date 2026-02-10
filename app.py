@@ -10,8 +10,9 @@ with st.sidebar:
 if user_api_key:
     try:
         genai.configure(api_key=user_api_key)
-        # Directly using the model name without prefix if models/ failed
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        
+        # Using the most stable model name format
+        model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -25,7 +26,7 @@ if user_api_key:
             with st.chat_message("user"):
                 st.markdown(prompt)
 
-            # API Call with error handling
+            # Generating content
             response = model.generate_content(prompt)
             
             with st.chat_message("assistant"):
@@ -33,10 +34,14 @@ if user_api_key:
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
                 
     except Exception as e:
+        # Error vachina chota exact ga em jarigindo chupisthundi
         st.error(f"Oka chinna error vachindi: {e}")
-        st.info("Tip: Google AI Studio lo kotha API key create chesi chudandi.")
+        if "404" in str(e):
+             st.warning("Tip: 'gemini-pro' model ki marustunnam, okasari malli try cheyandi.")
+             model = genai.GenerativeModel(model_name="gemini-pro")
 else:
     st.info("Please enter your API Key in the sidebar to start!")
+
 
 
 
