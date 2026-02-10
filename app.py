@@ -27,7 +27,7 @@ if user_api_key:
 
         # Gemini 2.0 Generation
         response = client.models.generate_content(
-            model="gemini-2.0-flash", 
+            model="gemini-1.5-flash", 
             contents=prompt
         )
         
@@ -36,5 +36,6 @@ if user_api_key:
             st.session_state.messages.append({"role": "assistant", "content": response.text})
 else:
     st.info("Please enter your API Key in the sidebar to start!")
+
 
 
