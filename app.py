@@ -5,14 +5,14 @@ st.set_page_config(page_title="Srivarshini's AI", page_icon="🌟")
 st.title("🌟 Srivarshini's World-Class AI")
 
 with st.sidebar:
-    # Kotha API Key ikkada enter chey
     user_api_key = st.text_input("Gemini API Key ikkada pettu:", type="password")
 
 if user_api_key:
     try:
+        # Standard configuration
         genai.configure(api_key=user_api_key)
         
-        # 'gemini-1.5-flash' is the most stable name for v1beta keys
+        # Try using the base name directly
         model = genai.GenerativeModel("gemini-1.5-flash")
 
         if "messages" not in st.session_state:
@@ -27,7 +27,7 @@ if user_api_key:
             with st.chat_message("user"):
                 st.markdown(prompt)
 
-            # Direct generation call
+            # API Call
             response = model.generate_content(prompt)
             
             with st.chat_message("assistant"):
@@ -35,7 +35,17 @@ if user_api_key:
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
                 
     except Exception as e:
-        # Error వస్తే అది ఏంటో ఇక్కడ చూపిస్తుంది
-        st.error(f"Error: {e}")
+        # Inka 404 vasthe, ikkada 'gemini-pro' ki auto-switch chestundi
+        if "404" in str(e):
+            st.error("Model version mismatch. Automating fix...")
+            try:
+                model = genai.GenerativeModel("gemini-pro")
+                response = model.generate_content(prompt)
+                with st.chat_message("assistant"):
+                    st.markdown(response.text)
+            except:
+                st.error("API Key problem unnadocchu. Please check Google AI Studio.")
+        else:
+            st.error(f"Error: {e}")
 else:
     st.info("Please enter your API Key in the sidebar to start!")
