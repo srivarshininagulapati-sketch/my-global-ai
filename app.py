@@ -9,11 +9,10 @@ with st.sidebar:
 
 if user_api_key:
     try:
-        # Standard configuration
         genai.configure(api_key=user_api_key)
         
-        # We will try 'gemini-1.5-flash-latest' which is the most compatible version
-        model = genai.GenerativeModel("gemini-1.5-flash-latest")
+        # 'gemini-pro' is the most stable name across all API versions
+        model = genai.GenerativeModel("gemini-pro")
 
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -27,7 +26,6 @@ if user_api_key:
             with st.chat_message("user"):
                 st.markdown(prompt)
 
-            # API Call
             response = model.generate_content(prompt)
             
             with st.chat_message("assistant"):
@@ -36,7 +34,6 @@ if user_api_key:
                 
     except Exception as e:
         st.error(f"Error: {e}")
-        st.info("Tip: API Key correct ga undo ledo chusukondi. Leda 'gemini-pro' try cheyandi.")
 else:
     st.info("Please enter your API Key in the sidebar to start!")
 
