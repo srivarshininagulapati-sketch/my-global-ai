@@ -1,17 +1,16 @@
 import streamlit as st
-from google import genai
+import google.generativeai as genai
 
-# Website Title
 st.set_page_config(page_title="Srivarshini's AI", page_icon="🌟")
 st.title("🌟 Srivarshini's World-Class AI")
 
-# Sidebar for Key
 with st.sidebar:
     user_api_key = st.text_input("Gemini API Key ikkada pettu:", type="password")
 
 if user_api_key:
-    # Gemini 2.0 connection
-    client = genai.Client(api_key=user_api_key)
+    # Stable version setup
+    genai.configure(api_key=user_api_key)
+    model = genai.GenerativeModel("gemini-1.5-flash")
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -25,15 +24,15 @@ if user_api_key:
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Gemini 2.0 Generation
-        response = client.models.generate_content(
-            model="gemini-1.5-flash", 
-            contents=prompt
-        )
-        
-        with st.chat_message("assistant"):
-            st.markdown(response.text)
-            st.session_state.messages.append({"role": "assistant", "content": response.text})
+        try:
+            # Stable generation call
+            response = model.generate_content(prompt)
+            
+            with st.chat_message("assistant"):
+                st.markdown(response.text)
+                st.session_state.messages.append({"role": "assistant", "content": response.text})
+        except Exception as e:
+            st.error(f"Error vachindi: {e}")
 else:
     st.info("Please enter your API Key in the sidebar to start!")
 
