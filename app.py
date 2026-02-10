@@ -17,7 +17,7 @@ if user_api_key:
         genai.configure(api_key=user_api_key)
         
         # Universal Stable Model
-        model = genai.GenerativeModel("gemini-1.5-flash")
+       model = genai.GenerativeModel("gemini-1.5-flash")
 
         # Chat history setup
         if "messages" not in st.session_state:
@@ -47,3 +47,4 @@ if user_api_key:
         st.warning("Pai error 'API_KEY_INVALID' ani unte, kotha key create cheyandi.")
 else:
     st.info("AI matladalante sidebar lo API Key pettandi.")
+
