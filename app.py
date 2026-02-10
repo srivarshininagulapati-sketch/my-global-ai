@@ -9,8 +9,8 @@ with st.sidebar:
 
 if user_api_key:
     # Stable version setup
-    genai.configure(api_key=user_api_key)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    genai.configure(api_key=user_api_key, transport='rest') # transport='rest' adds stability
+model = genai.GenerativeModel("models/gemini-1.5-flash") # Add 'models/' prefix
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -35,6 +35,7 @@ if user_api_key:
             st.error(f"Error vachindi: {e}")
 else:
     st.info("Please enter your API Key in the sidebar to start!")
+
 
 
 
