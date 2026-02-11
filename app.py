@@ -2,15 +2,16 @@ import streamlit as st
 import google.generativeai as genai
 
 st.set_page_config(page_title="Srivarshini's AI", page_icon="🌟")
-st.title("🌟 Srivarshini's World-Class AI")
+st.title("🌟 Srivarshini's AI")
 
-# Secrets nunchi key ni teesukuntundhi
+# Secrets check
 if "GEMINI_API_KEY" in st.secrets:
     try:
         genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
         
-        # 'models/' prefix ni motham teeyasamu
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        # Ikkada 'gemini-1.5-flash-latest' ani marchamu
+        # Idhi kachithanga v1beta error ni fix chesthundhi
+        model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -31,6 +32,6 @@ if "GEMINI_API_KEY" in st.secrets:
                 st.session_state.messages.append({"role": "assistant", "content": response.text})
                 
     except Exception as e:
-        st.error(f"Error: {e}")
+        st.error(f"Error logic check: {e}")
 else:
-    st.warning("Secrets lo 'GEMINI_API_KEY' ledhu. Dashboard ki velli add cheyandi.")
+    st.warning("Dashboard Secrets lo 'GEMINI_API_KEY' petti save cheyandi.")
