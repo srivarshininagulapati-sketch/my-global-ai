@@ -11,7 +11,7 @@ if "GEMINI_API_KEY" in st.secrets:
         
         # ఇక్కడ మోడల్ పేరును అత్యంత సరళంగా "gemini-1.5-flash" అని ఇస్తున్నాం
         # ఇది v1beta సమస్యను సాధ్యమైనంత వరకు తగ్గిస్తుంది
-        model = genai.GenerativeModel("gemini-1.5-flash-8b")
+        model = genai.GenerativeModel("gemini-1.5-flash")
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
@@ -36,4 +36,5 @@ if "GEMINI_API_KEY" in st.secrets:
         st.error(f"System Message: {e}")
 else:
     st.warning("Dashboard Secrets lo 'GEMINI_API_KEY' petti save cheyandi.")
+
 
